@@ -1,32 +1,36 @@
 package es.codeurjc.daw;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+//@SpringBootTest
+//@RunWith(SpringRunner.class)
+@WebMvcTest(BlogRestController.class)
 @DisplayName("Unitary tests")
 public class UnitaryTest {
 
 	@Autowired
 	private MockMvc mvc;
+
+	@MockBean
+	PostService postService;
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -38,7 +42,10 @@ public class UnitaryTest {
 		// CREAMOS UN NUEVO POST
 
 		Post post = new Post("Mi titulo", "Mi contenido");
-		
+		Mockito.doNothing().when(postService).addPost(post);
+		when(postService.getPost(post.getId())).thenReturn(post);
+
+
 		MvcResult result = mvc.perform(
 			post("/api/post")
 				.content(objectMapper.writeValueAsString(post))
@@ -72,7 +79,11 @@ public class UnitaryTest {
 		// CREAMOS UN NUEVO POST
 
 		Post post = new Post("Mi titulo", "Mi contenido con comentarios");
-		
+
+		Mockito.doNothing().when(postService).addPost(post);
+
+		when(postService.getPost(post.getId())).thenReturn(post);
+
 		MvcResult createPostResult = mvc.perform(
 			post("/api/post")
 				.content(objectMapper.writeValueAsString(post))
@@ -86,11 +97,13 @@ public class UnitaryTest {
 		);
 
 		// CREAMOS UN NUEVO COMENTARIO
-
+		long id = resultPost.getId();
 		Comment comment = new Comment("Juan", "Buen post");
+		when(postService.addComment(eq(id), eq(comment))).thenReturn(comment);
+
 
 		mvc.perform(
-			post("/api/post/"+resultPost.getId()+"/comment")
+			post("/api/post/"+id+"/comment")
 				.content(objectMapper.writeValueAsString(comment))
 				.contentType(MediaType.APPLICATION_JSON)
 		  )
@@ -99,6 +112,9 @@ public class UnitaryTest {
 		  .andExpect(jsonPath("$.message", equalTo(comment.getMessage())));
 
 		// COMPROBAMOS QUE EL COMENTARIO EXISTE
+
+		post.getComments().add(comment);
+		when(postService.getPost(post.getId())).thenReturn(post);
 
 		mvc.perform(
 			get("/api/post/"+resultPost.getId())
@@ -118,7 +134,10 @@ public class UnitaryTest {
 		// CREAMOS UN NUEVO POST
 
 		Post post = new Post("Mi titulo", "Mi contenido con comentarios");
-		
+
+		Mockito.doNothing().when(postService).addPost(post);
+
+
 		MvcResult createPostResult = mvc.perform(
 			post("/api/post")
 				.content(objectMapper.writeValueAsString(post))
@@ -134,6 +153,8 @@ public class UnitaryTest {
 		// CREAMOS UN NUEVO COMENTARIO
 
 		Comment comment = new Comment("Juan", "Buen post");
+		long id = postCreated.getId();
+		when(postService.addComment(eq(id), eq(comment))).thenReturn(comment);
 
 		MvcResult createCommentResult = mvc.perform(
 			post("/api/post/"+postCreated.getId()+"/comment")
@@ -147,7 +168,7 @@ public class UnitaryTest {
 		);
 
 		// BORRAMOS EL COMENTARIO
-
+		doNothing().when(postService).deleteComment(postCreated.getId(), commentCreated.getId());
 		mvc.perform(
 			delete("/api/post/"+postCreated.getId()+"/comment/"+commentCreated.getId())
 				.content(objectMapper.writeValueAsString(comment))
@@ -155,6 +176,8 @@ public class UnitaryTest {
 		).andExpect(status().isNoContent());
 
 		// COMPROBAMOS QUE EL COMENTARIO YA NO EXISTE
+
+		when(postService.getPost(post.getId())).thenReturn(post);
 
 		mvc.perform(
 			get("/api/post/"+postCreated.getId())
