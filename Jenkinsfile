@@ -17,8 +17,8 @@ node {
    }
    stage("Quality"){
         sh("printenv")
-       sh 'mvn sonar:sonar  -Dsonar.pullrequest.branch=f${CHANGE_BRANCH} -Dsonar.pullrequest.key=${CHANGE_ID}
-'
+       sh 'mvn sonar:sonar  -Dsonar.pullrequest.branch=${CHANGE_BRANCH} -Dsonar.pullrequest.key=${CHANGE_ID}'
+
    }
    stage("Save jar"){
        archive "target/*.jar"
