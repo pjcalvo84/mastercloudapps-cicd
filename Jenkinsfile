@@ -6,10 +6,11 @@ node {
         url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git'
       )
     }
+    stage("Create jar"){
+        sh 'mvn clean install -B -DskipTest'
+    }
     stage("Test") {
-
         sh 'mvn test'
-
    }
    stage("Quality"){
         sh("printenv")
