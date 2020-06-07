@@ -1,1 +1,1 @@
-sudo docker run --name db -p 3306:3306 -e MYSQL_ROOT_PASSWORD=pass -e MYSQL_DATABASE=blog -d mysql:5.5.62
+docker run --name db -p 3306:3306 -e MYSQL_ROOT_PASSWORD=pass -e MYSQL_DATABASE=blog -d mysql:5.5.62
