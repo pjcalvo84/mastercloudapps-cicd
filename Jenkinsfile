@@ -8,7 +8,7 @@ node {
     }
     stage("Test") {
 
-        sh 'mvn verify -Dspring.datasource.url=jdbc:mysql://${var}/blog -Dspring.datasource.username=mark -Dspring.datasource.password=hello22'
+        sh 'mvn test'
 
    }
    stage("Quality"){
