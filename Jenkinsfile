@@ -4,7 +4,7 @@ node {
     stage("Preparation") {
       git(
         url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git',
-        branch: CHANGE_BRANCH
+        branch: BRANCH_NAME
       )
       sh("printenv")
 
@@ -17,17 +17,17 @@ node {
    }
    stage("Quality"){
         sh("printenv")
-       sh "mvn sonar:sonar  -Dsonar.pullrequest.branch=${CHANGE_BRANCH} -Dsonar.pullrequest.key=${CHANGE_ID}"
+       sh "mvn sonar:sonar  -Dsonar.pullrequest.branch=${BRANCH_NAME} -Dsonar.pullrequest.key=${CHANGE_ID}"
 
    }
    stage("Save jar"){
-       archive "target/*.jar"
+       archiveArtifacts "target/*.jar"
    }
   }
    finally {
 //       sh "docker stop \$(docker ps -aq -f 'name=db')"
 //       sh "docker rm \$(docker ps -aq -f 'name=db')"
       junit "target/*-reports/TEST-*.xml"
-      archive "target/out.log"
+      archiveArtifacts "target/out.log"
     }
 }
