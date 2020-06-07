@@ -98,12 +98,6 @@ public class SeleniumTestIT {
 
 	}
 
-	@Test
-	@DisplayName("Borrar un comentario de un post y verificar que no aparece el comentario")
-	public void deleteCommentTest() throws Exception {
-
-	}
-
 	private WebElement findElementWithText(String text) {
         return driver.findElement(getConditionForText(text));
 	}

@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 public class Comment {
@@ -53,4 +54,18 @@ public class Comment {
 		return this.author + ": " + this.message;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Comment comment = (Comment) o;
+		return id == comment.id &&
+				author.equals(comment.author) &&
+				message.equals(comment.message);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, author, message);
+	}
 }
