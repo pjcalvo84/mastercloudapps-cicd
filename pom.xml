@@ -25,6 +25,11 @@
         <skipTests>false</skipTests>
         <skipITs>${skipTests}</skipITs>
         <skipUTs>${skipTests}</skipUTs>
+
+            <sonar.projectKey>pjcalvo84_mastercloudapps-cicd</sonar.projectKey>
+            <sonar.organization>pjcalvo84</sonar.organization>
+            <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+            <sonar.login>d639daac49680e8f2b36a54d8e526559759a9ee6</sonar.login>
     </properties>
 
     <dependencies>
