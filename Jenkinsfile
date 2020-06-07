@@ -1,51 +1,28 @@
-// node {
-//   stage("Init") {
-//     sh 'echo hello'
-//   }
-//
-//   stage("Test") {
-//     sh 'echo bye'
-//   }
-//
-//   stage("Security test") {
-//     sh 'echo vulnerabilities'
-//   }
-// }
-pipeline {
- tools {
-   maven "M3"
- }
- agent any
- stages {
-   stage("Preparation") {
-     steps {
-       git 'https://github.com/pjcalvo84/mastercloudapps-cicd.git'
-     }
-   }
-   stage("Create jar") {
-       steps {
-           sh "mvn package -DskipTests"
-       }
-   }
-   stage("Start app") {
-    steps {
-     sh "cd target;java -jar *.jar > out.log & echo \$! > pid"
+def var
+node {
+  try{
+    stage("Preparation") {
+      git(
+        url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git'
+      )
     }
+    stage("Test") {
+
+        sh 'mvn verify -Dspring.datasource.url=jdbc:mysql://${var}/blog -Dspring.datasource.username=mark -Dspring.datasource.password=hello22'
+
    }
-   stage("Test") {
-     steps {
-       sh "mvn test -DskipITs"
-     }
+   stage("Quality"){
+        sh("printenv")
+       //sh 'mvn sonar:sonar sonar.pullrequest.branch=feature/pruebaPR'
    }
- }
- post {
-    always {
-      junit "**/target/surefire-reports/TEST-*.xml"
-      sh "kill \$(cat target/pid)"
+   stage("Save jar"){
+       archive "target/*.jar"
+   }
+  }
+   finally {
+      sh "docker stop \$(docker ps -aq -f 'name=db')"
+      sh "docker rm \$(docker ps -aq -f 'name=db')"
+      junit "target/*-reports/TEST-*.xml"
       archive "target/out.log"
     }
-    success {
-      archive "target/*.jar"
-    }
- }
 }
