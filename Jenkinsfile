@@ -28,6 +28,5 @@ node {
 //       sh "docker stop \$(docker ps -aq -f 'name=db')"
 //       sh "docker rm \$(docker ps -aq -f 'name=db')"
       junit "target/*-reports/TEST-*.xml"
-      archiveArtifacts "target/out.log"
     }
 }
