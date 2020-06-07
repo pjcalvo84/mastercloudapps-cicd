@@ -4,7 +4,7 @@ node {
     stage("Preparation") {
       git(
         url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git',
-        branch: BRANCH_NAME
+        branch: CHANGE_BRANCH
       )
       sh("printenv")
 
@@ -17,7 +17,7 @@ node {
    }
    stage("Quality"){
         sh("printenv")
-       sh "mvn sonar:sonar  -Dsonar.pullrequest.branch=${BRANCH_NAME} -Dsonar.pullrequest.key=${CHANGE_ID}"
+       sh "mvn sonar:sonar  -Dsonar.pullrequest.branch=${CHANGE_BRANCH} -Dsonar.pullrequest.key=${CHANGE_ID}"
 
    }
    stage("Save jar"){
