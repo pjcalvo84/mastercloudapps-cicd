@@ -17,15 +17,16 @@ node {
    }
    stage("Quality"){
         sh("printenv")
-       //sh 'mvn sonar:sonar sonar.pullrequest.branch=feature/pruebaPR'
+       sh 'mvn sonar:sonar  -Dsonar.pullrequest.branch=f${CHANGE_BRANCH} -Dsonar.pullrequest.key=${CHANGE_ID}
+'
    }
    stage("Save jar"){
        archive "target/*.jar"
    }
   }
    finally {
-      sh "docker stop \$(docker ps -aq -f 'name=db')"
-      sh "docker rm \$(docker ps -aq -f 'name=db')"
+//       sh "docker stop \$(docker ps -aq -f 'name=db')"
+//       sh "docker rm \$(docker ps -aq -f 'name=db')"
       junit "target/*-reports/TEST-*.xml"
       archive "target/out.log"
     }
