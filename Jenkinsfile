@@ -3,7 +3,8 @@ node {
   try{
     stage("Preparation") {
       git(
-        url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git'
+        url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git',
+        branch: ${CHANGE_BRANCH}
       )
       sh("printenv")
     }
