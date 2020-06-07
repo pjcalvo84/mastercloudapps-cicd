@@ -4,9 +4,10 @@ node {
     stage("Preparation") {
       git(
         url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git',
-        branch: ${CHANGE_BRANCH}
+        branch: CHANGE_BRANCH
       )
       sh("printenv")
+
     }
     stage("Create jar"){
         sh 'mvn clean install -B -DskipTests'
