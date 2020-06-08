@@ -1,13 +1,27 @@
+def var
 node {
-  stage("Init") {
-    sh 'echo hello'
-  }
+  try{
+    stage("Preparation") {
+      git(
+        url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git',
+        branch: BRANCH_NAME
+      )
+    }
+    stage("Create jar"){
+        sh 'mvn clean install -B -DskipTests'
+    }
+    stage("Test") {
+        sh 'mvn test'
+   }
+   stage("Quality"){
+       sh "mvn sonar:sonar  -Dsonar.branch=${BRANCH_NAME}"
 
-  stage("Test") {
-    sh 'echo bye'
+   }
+   stage("Save jar"){
+       archiveArtifacts "target/*.jar"
+   }
   }
-
-  stage("Security test") {
-    sh 'echo vulnerabilities'
-  }
+   finally {
+      junit "target/*-reports/TEST-*.xml"
+    }
 }
