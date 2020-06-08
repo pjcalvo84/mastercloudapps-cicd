@@ -1,7 +1,10 @@
 def var
+def scmVars = checkout scm
+ def branchName = scmVars.GIT_BRANCH
 node {
   try{
     stage("Preparation") {
+    sh ' echo ${branchName}'
     sh("printenv")
       if(CHANGE_BRANCH != null)
       git(
