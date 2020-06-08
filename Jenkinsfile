@@ -29,6 +29,7 @@ node {
    }
    stage('Publish') {
       sh 'mvn clean deploy -DskipTests'
+      }
   }
    finally {
       junit "target/*-reports/TEST-*.xml"
