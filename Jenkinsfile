@@ -6,24 +6,13 @@ node {
 //       git(
           //         url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git'
           //       )
-
-      def isPr() {
-          env.CHANGE_ID != null
-      }
-      def extensions = []
-      if (isPr()) {
-          extensions = [[$class: 'PreBuildMerge', options: [mergeRemote: "refs/remotes/origin/pull-requests", mergeTarget: "${env.CHANGE_ID}/from"]]]
-      }
-      checkout([$class: 'GitSCM',
-          doGenerateSubmoduleConfigurations: false,
-          extensions: extensions,
-          submoduleCfg: [],
-          userRemoteConfigs: [[
-              refspec: '+refs/heads/*:refs/remotes/origin/* +refs/pull-requests/*:refs/remotes/origin/pull-requests/*',
-              url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git'
-          ]]
-      ])
-
+          git {
+                      remote {
+                          github('https://github.com/pjcalvo84/mastercloudapps-cicd.git')
+                          refspec('+refs/pull/*:refs/remotes/origin/pr/*')
+                      }
+                      branch('${sha1}')
+                  }
       git status
     }
     stage("Create jar"){
