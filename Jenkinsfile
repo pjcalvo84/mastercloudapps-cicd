@@ -28,11 +28,10 @@ node {
        archiveArtifacts "target/*.jar"
    }
    stage('Publish') {
-      sh 'mvn clean deploy -DskipTests'
+      sh 'mvn deploy -DskipTests'
       }
   }
    finally {
-   sh 'ls -la target/'
       junit "target/*-reports/TEST-*.xml"
     }
 }
