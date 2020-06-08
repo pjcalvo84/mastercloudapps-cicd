@@ -2,18 +2,10 @@ def var
 node {
   try{
     stage("Preparation") {
-    sh("printenv")
-//       git(
-          //         url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git'
-          //       )
-          git {
-                      remote {
-                          github('https://github.com/pjcalvo84/mastercloudapps-cicd.git')
-                          refspec('+refs/pull/*:refs/remotes/origin/pr/*')
-                      }
-                      branch('${sha1}')
-                  }
-      git status
+      git(
+        url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git',
+        branch: BRANCH_NAME
+      )
     }
     stage("Create jar"){
         sh 'mvn clean install -B -DskipTests'
