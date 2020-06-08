@@ -4,8 +4,7 @@ node {
     stage("Preparation") {
     sh("printenv")
       git(
-        url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git',
-        branch: BRANCH_NAME
+        url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git'
       )
     }
     stage("Create jar"){
