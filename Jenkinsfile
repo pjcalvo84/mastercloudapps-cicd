@@ -1,11 +1,18 @@
 def var
+
 node {
   try{
-    stage("Preparation") {
+    stage("Prepare"){
+      if(CHANGE_BRANCH != null)
       git(
         url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git',
-        branch: BRANCH_NAME
+        branch: CHANGE_BRANCH
       )
+      else
+      git(
+              url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git',
+              branch: BRANCH_NAME
+            )
     }
     stage("Create jar"){
         sh 'mvn clean install -B -DskipTests'
@@ -21,10 +28,7 @@ node {
        archiveArtifacts "target/*.jar"
    }
    stage('Publish') {
-     nexusPublisher nexusInstanceId: 'localNexus', nexusRepositoryId: 'mvn-releases',
-     packages: [[$class: 'MavenPackage', mavenAssetList:
-     [[classifier: '', extension: '', filePath: 'target/practica-jenkins-0.0.1-SNAPSHOT.jar']],
-     mavenCoordinate: [artifactId: 'practica-jenkins', groupId: 'es.codeurjc.ci', packaging: 'jar', version: '1.0.0']]]
+      sh 'mvn deploy -DskipTests'
       }
   }
    finally {
