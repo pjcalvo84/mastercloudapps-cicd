@@ -2,9 +2,10 @@ def var
 node {
   try{
     stage("Preparation") {
+    sh("printenv")
       git(
         url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git',
-        branch: BRANCH_NAME
+        branch: CHANGE_BRANCH
       )
     }
     stage("Create jar"){
