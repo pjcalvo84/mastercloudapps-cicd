@@ -6,6 +6,7 @@ node {
       git(
         url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git'
       )
+      git status
     }
     stage("Create jar"){
         sh 'mvn clean install -B -DskipTests'
