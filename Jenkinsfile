@@ -2,13 +2,7 @@ def var
 
 node {
   try{
-    stage("Preparation") {
 
-     echo 'Pulling... ' + env.GIT_BRANCH
-     def scmVars = checkout scm
-          def branchName = scmVars.GIT_BRANCH
-    sh ' echo ${branchName}'
-    sh("printenv")
       if(CHANGE_BRANCH != null)
       git(
         url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git',
@@ -34,11 +28,7 @@ node {
        archiveArtifacts "target/*.jar"
    }
    stage('Publish') {
-     nexusPublisher nexusInstanceId: 'localNexus', nexusRepositoryId: 'mvn-releases',
-     packages: [[$class: 'MavenPackage', mavenAssetList:
-     [[classifier: '', extension: '', filePath: 'target/practica-jenkins-0.0.1-SNAPSHOT.jar']],
-     mavenCoordinate: [artifactId: 'practica-jenkins', groupId: 'es.codeurjc.ci', packaging: 'jar', version: '1.0.0']]]
-      }
+      sh 'mvn clean deploy -DskipTests'
   }
    finally {
       junit "target/*-reports/TEST-*.xml"
