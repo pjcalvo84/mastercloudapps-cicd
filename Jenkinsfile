@@ -32,6 +32,7 @@ node {
       }
   }
    finally {
+   sh 'ls -la target/'
       junit "target/*-reports/TEST-*.xml"
     }
 }
