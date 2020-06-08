@@ -1,0 +1,35 @@
+def var
+node {
+  try{
+    stage("Preparation") {
+      git(
+        url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git'
+      )
+    }
+    stage ('Run DataBase'){
+        sh 'chmod +x ./startDDBB.sh'
+        sh './startDDBB.sh'
+        var = sh(script: "docker inspect --format '{{ .NetworkSettings.IPAddress }}' \$(docker ps -aq -f 'name=db')", returnStdout: true).trim()
+
+    }
+    stage("Create jar") {
+        sh "mvn clean package -B -DskipTests"
+   }
+    stage("Test") {
+
+        sh 'mvn verify -Dspring.datasource.url=jdbc:mysql://${var}/blog -Dspring.datasource.username=mark -Dspring.datasource.password=hello22'
+
+   }
+   stage("Quality"){
+       sh 'mvn sonar:sonar'
+   }
+   stage("Save jar"){
+       archiveArtifacts "target/*.jar"
+   }
+  }
+   finally {
+      sh "docker stop \$(docker ps -aq -f 'name=db')"
+      sh "docker rm \$(docker ps -aq -f 'name=db')"
+      junit "target/*-reports/TEST-*.xml"
+    }
+}
