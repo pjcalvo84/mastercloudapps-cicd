@@ -1,4 +1,7 @@
 def var
+def mvnVersion
+def DATETIME_TAG
+def TAG
 node {
   try{
     stage("Preparation") {
@@ -18,7 +21,8 @@ node {
 
              DATETIME_TAG = java.time.LocalDateTime.now()
              TAG = mvnVersion + "-" + DATETIME_TAG;
-             sh 'cd ./changeTag.sh ${TAG} pom.xml'
+
+             sh ' ./changeTag.sh ${TAG} pom.xml'
           }
 
     stage("Create jar") {
