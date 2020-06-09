@@ -12,13 +12,8 @@ node {
         var = sh(script: "docker inspect --format '{{ .NetworkSettings.IPAddress }}' \$(docker ps -aq -f 'name=db')", returnStdout: true).trim()
 
     }
-    stage ('Tag repository') {
-       sh 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout  > mvnVersion'
-       mvnVersion = readFile 'outFile'
-
-             DATETIME_TAG = java.time.LocalDateTime.now()
-             TAG = mvnVersion + "-" + DATETIME_TAG;
-             sh 'cd ./changeTag.sh ${TAG} pom.xml'
+     stage ('Tag repository') {
+              sh 'cd ./changeTag.sh ${TAG} pom.xml'
           }
 
     stage("Create jar") {
@@ -32,6 +27,7 @@ node {
    stage("Quality"){
        sh 'mvn sonar:sonar'
    }
+
 
    stage("Save jar"){
        archiveArtifacts "target/*.jar"
