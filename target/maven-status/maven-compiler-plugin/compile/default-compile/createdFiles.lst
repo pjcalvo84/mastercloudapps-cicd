@@ -1,11 +1,8 @@
+es/codeurjc/daw/repository/PostRepository.class
 es/codeurjc/daw/PostService.class
-es/codeurjc/daw/Post$Extended.class
-es/codeurjc/daw/Post$Full.class
 es/codeurjc/daw/BlogWebController.class
 es/codeurjc/daw/Application.class
-es/codeurjc/daw/BlogRestController$Full.class
+es/codeurjc/daw/repository/CommentRepository.class
 es/codeurjc/daw/Comment.class
-es/codeurjc/daw/Comment$Full.class
-es/codeurjc/daw/Post$Basic.class
 es/codeurjc/daw/Post.class
 es/codeurjc/daw/BlogRestController.class

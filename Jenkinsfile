@@ -1,11 +1,20 @@
 def var
+def branch
 node {
   try{
-    stage("Preparation") {
+    stage("Prepare"){
+    sh("printenv")
+       try{
+        branch = CHANGE_BRANCH
+       }
+       catch(Exception e){
+        branch = BRANCH_NAME
+       }
+
       git(
-        url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git',
-        branch: BRANCH_NAME
-      )
+              url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git',
+              branch: branch
+            )
     }
     stage("Create jar"){
         sh 'mvn clean install -B -DskipTests'
@@ -14,17 +23,14 @@ node {
         sh 'mvn test'
    }
    stage("Quality"){
-       sh "mvn sonar:sonar  -Dsonar.branch=${BRANCH_NAME}"
+       sh "mvn sonar:sonar  -Dsonar.branch=${branch}"
 
    }
    stage("Save jar"){
        archiveArtifacts "target/*.jar"
    }
    stage('Publish') {
-     nexusPublisher nexusInstanceId: 'localNexus', nexusRepositoryId: 'mvn-releases',
-     packages: [[$class: 'MavenPackage', mavenAssetList:
-     [[classifier: '', extension: '', filePath: 'target/practica-jenkins-0.0.1-SNAPSHOT.jar']],
-     mavenCoordinate: [artifactId: 'practica-jenkins', groupId: 'es.codeurjc.ci', packaging: 'jar', version: '1.0.0']]]
+      sh 'mvn deploy -DskipTests'
       }
   }
    finally {
