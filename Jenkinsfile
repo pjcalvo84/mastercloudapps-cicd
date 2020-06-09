@@ -3,6 +3,7 @@ def var
 node {
   try{
     stage("Prepare"){
+    sh("printenv")
       if(CHANGE_BRANCH != null)
       git(
         url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git',
