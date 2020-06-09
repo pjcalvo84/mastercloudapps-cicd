@@ -34,7 +34,7 @@ node {
           }
 
     stage("Create jar") {
-        sh "mvn clean package -B -DskipTests"
+        sh "mvn clean package -B -DskipTests -Dversion=${TAG}"
    }
     stage("Test") {
 
@@ -50,7 +50,7 @@ node {
    }
    stage('Publish') {
 
-         sh 'mvn deploy -DskipTests'
+         sh 'mvn deploy -DskipTests -Dversion=${TAG}'
 
      }
   }
