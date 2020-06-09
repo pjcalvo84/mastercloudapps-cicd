@@ -1,18 +1,19 @@
 def var
-
+def branch
 node {
   try{
     stage("Prepare"){
     sh("printenv")
-      if(CHANGE_BRANCH != null)
-      git(
-        url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git',
-        branch: CHANGE_BRANCH
-      )
-      else
+       try{
+        branch = CHANGE_BRANCH
+       }
+       catch(Exception e){
+        branch = BRANCH_NAME
+       }
+
       git(
               url: 'https://github.com/pjcalvo84/mastercloudapps-cicd.git',
-              branch: BRANCH_NAME
+              branch: branch
             )
     }
     stage("Create jar"){
@@ -22,7 +23,7 @@ node {
         sh 'mvn test'
    }
    stage("Quality"){
-       sh "mvn sonar:sonar  -Dsonar.branch=${BRANCH_NAME}"
+       sh "mvn sonar:sonar  -Dsonar.branch=${branch}"
 
    }
    stage("Save jar"){
