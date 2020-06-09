@@ -13,7 +13,7 @@ node {
 
     }
      stage ('Tag repository') {
-              sh " ./changeTag.sh ${TAG} pom.xml"
+              sh " mvn deploy -Dversion=${TAG}"
           }
 
     stage("Create jar") {
