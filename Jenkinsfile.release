@@ -13,7 +13,7 @@ node {
 
     }
      stage ('Tag repository') {
-              sh "cd ./changeTag.sh ${TAG} pom.xml"
+              sh " ./changeTag.sh ${TAG} pom.xml"
           }
 
     stage("Create jar") {
