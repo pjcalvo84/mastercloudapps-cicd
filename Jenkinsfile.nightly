@@ -13,7 +13,7 @@ node {
 
     }
     stage ('Tag repository') {
-       sh 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout  > mvnVersion'
+       sh 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout  > outFile'
        mvnVersion = readFile 'outFile'
 
              DATETIME_TAG = java.time.LocalDateTime.now()
