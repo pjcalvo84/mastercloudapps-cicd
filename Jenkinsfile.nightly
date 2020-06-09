@@ -30,7 +30,7 @@ node {
              TAG = mvnVersion + "-" + DATETIME_TAG;
 
              sh " echo ${TAG}"
-             sh ' ./changeTag.sh ${TAG} pom.xml'
+              sh " mvn deploy -Dversion=${TAG}"
           }
 
     stage("Create jar") {
