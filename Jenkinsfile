@@ -1,11 +1,13 @@
 def var
 def branch
+def pr
 node {
   try{
     stage("Prepare"){
     sh("printenv")
        try{
         branch = CHANGE_BRANCH
+        pr=true
        }
        catch(Exception e){
         branch = BRANCH_NAME
@@ -23,13 +25,17 @@ node {
         sh 'mvn test'
    }
    stage("Quality"){
-       sh "mvn sonar:sonar  -Dsonar.branch=${branch}"
-
+        if(pr){
+            sh 'mvn sonar:sonar  -Dsonar.pullrequest.branch=f${CHANGE_BRANCH} -Dsonar.pullrequest.key=${CHANGE_ID}'
+        }else{
+            sh "mvn sonar:sonar  -Dsonar.branch=${branch}"
+        }
    }
    stage("Save jar"){
        archiveArtifacts "target/*.jar"
    }
    stage('Publish') {
+   if(branch == "master")
       sh 'mvn deploy -DskipTests'
       }
   }
