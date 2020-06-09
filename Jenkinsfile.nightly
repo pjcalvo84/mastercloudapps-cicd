@@ -22,6 +22,7 @@ node {
              DATETIME_TAG = java.time.LocalDateTime.now()
              TAG = mvnVersion + "-" + DATETIME_TAG;
 
+              sh '${TAG}'
              sh ' ./changeTag.sh ${TAG} pom.xml'
           }
 
