@@ -17,11 +17,11 @@ node {
    }
     stage("Test") {
 
-        sh 'mvn verify -Dspring.datasource.username=mark -Dspring.datasource.password=hello22'
+        sh "mvn verify -Dspring.datasource.username=mark -Dspring.datasource.password=hello22 -Dversion=${TAG}"
 
    }
    stage("Quality"){
-       sh 'mvn sonar:sonar'
+       sh "mvn sonar:sonar -Dversion=${TAG}"
    }
 
 
@@ -29,11 +29,11 @@ node {
        archiveArtifacts "target/*.jar"
    }
    stage('Publish') {
-         nexusPublisher nexusInstanceId: 'localNexus', nexusRepositoryId: 'mvn-releases',
-                 packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '',
-                 filePath: "target/*${TAG}.jar"]], mavenCoordinate: [artifactId: 'practica-jenkins',
-                 groupId: 'es.codeurjc.ci', packaging: 'jar', version: "${TAG}"]]]
-     }
+            nexusPublisher nexusInstanceId: 'localNexus', nexusRepositoryId: 'mvn-releases',
+                    packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '',
+                    filePath: "target/practica-jenkins-${TAG}.jar"]], mavenCoordinate: [artifactId: 'practica-jenkins',
+                    groupId: 'es.codeurjc.ci', packaging: 'jar', version: "${TAG}"]]]
+        }
   }
    finally {
       sh "docker stop \$(docker ps -aq -f 'name=db')"
