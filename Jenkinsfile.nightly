@@ -2,6 +2,7 @@ def var
 def mvnVersion
 def DATETIME_TAG
 def TAG
+def version
 node {
   try{
     stage("Preparation") {
@@ -19,8 +20,11 @@ node {
        sh 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout  > outFile'
        mvnVersion = readFile 'outFile'
 
+        version = sh(script:" echo ${mvnVersion} | cut -d'-' -f1", returnStdout: true).trim()
+        sh " echo ${version}"
+
          DATETIME_TAG = java.time.LocalDateTime.now()
-         TAG = mvnVersion + "-" + DATETIME_TAG;
+         TAG = version + "-NIGHTLY-SNAPSHOT";
 
          sh " echo ${TAG}"
           }
@@ -41,10 +45,7 @@ node {
        archiveArtifacts "target/*.jar"
    }
    stage('Publish') {
-            nexusPublisher nexusInstanceId: 'localNexus', nexusRepositoryId: 'mvn-snapshots',
-                    packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '',
-                    filePath: "target/practica-jenkins-${TAG}.jar"]], mavenCoordinate: [artifactId: 'practica-jenkins',
-                    groupId: 'es.codeurjc.ci', packaging: 'jar', version: "${TAG}"]]]
+           sh "mvn deploy -DskipTests -Dversion=${TAG}"
         }
   }
    finally {
