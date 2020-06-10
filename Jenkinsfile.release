@@ -17,7 +17,7 @@ node {
    }
     stage("Test") {
 
-        sh 'mvn verify -Dspring.datasource.url=jdbc:mysql://${var}/blog -Dspring.datasource.username=mark -Dspring.datasource.password=hello22'
+        sh "mvn verify -Dspring.datasource.url=jdbc:mysql://${var}/blog -Dspring.datasource.username=mark -Dspring.datasource.password=hello22"
 
    }
    stage("Quality"){
@@ -29,9 +29,7 @@ node {
        archiveArtifacts "target/*.jar"
    }
    stage('Publish') {
-
          sh 'mvn deploy -DskipTests -Dversion=${TAG}'
-
      }
   }
    finally {

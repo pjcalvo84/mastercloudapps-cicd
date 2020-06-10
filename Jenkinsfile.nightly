@@ -3,11 +3,6 @@ def mvnVersion
 def DATETIME_TAG
 def TAG
 node {
-
-    script {
-  DATE_TAG = java.time.LocalDate.now()
-
-}
   try{
     stage("Preparation") {
       git(
@@ -16,7 +11,6 @@ node {
     }
     stage ('Run DataBase'){
         sh 'chmod +x ./startDDBB.sh'
-        sh 'ls'
         sh './startDDBB.sh'
         var = sh(script: "docker inspect --format '{{ .NetworkSettings.IPAddress }}' \$(docker ps -aq -f 'name=db')", returnStdout: true).trim()
 
@@ -25,12 +19,10 @@ node {
        sh 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout  > outFile'
        mvnVersion = readFile 'outFile'
 
+         DATETIME_TAG = java.time.LocalDateTime.now()
+         TAG = mvnVersion + "-" + DATETIME_TAG;
 
-             DATETIME_TAG = java.time.LocalDateTime.now()
-             TAG = mvnVersion + "-" + DATETIME_TAG;
-
-             sh " echo ${TAG}"
-              sh " mvn deploy -Dversion=${TAG}"
+         sh " echo ${TAG}"
           }
 
     stage("Create jar") {
