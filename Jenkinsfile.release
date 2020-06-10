@@ -34,6 +34,11 @@ node {
                     filePath: "target/practica-jenkins-${TAG}.jar"]], mavenCoordinate: [artifactId: 'practica-jenkins',
                     groupId: 'es.codeurjc.ci', packaging: 'jar', version: "${TAG}"]]]
         }
+   stage('Tag in repo'){
+
+              sh "git tag ${TAG}"
+              sh "git push --tags"
+          }
   }
    finally {
       sh "docker stop \$(docker ps -aq -f 'name=db')"

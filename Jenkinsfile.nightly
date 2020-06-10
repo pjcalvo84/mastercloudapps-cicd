@@ -47,6 +47,11 @@ node {
    stage('Publish') {
            sh "mvn deploy -DskipTests -Dversion=${TAG}"
         }
+   stage('Tag in repo'){
+
+           sh "git tag ${version}-${DATETIME_TAG}-NIGHTLY"
+           sh "git push --tags"
+       }
   }
    finally {
       sh "docker stop \$(docker ps -aq -f 'name=db')"
