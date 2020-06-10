@@ -41,7 +41,7 @@ node {
        archiveArtifacts "target/*.jar"
    }
    stage('Publish') {
-            nexusPublisher nexusInstanceId: 'localNexus', nexusRepositoryId: 'mvn-releases',
+            nexusPublisher nexusInstanceId: 'localNexus', nexusRepositoryId: 'mvn-snapshots',
                     packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '',
                     filePath: "target/practica-jenkins-${TAG}.jar"]], mavenCoordinate: [artifactId: 'practica-jenkins',
                     groupId: 'es.codeurjc.ci', packaging: 'jar', version: "${TAG}"]]]
