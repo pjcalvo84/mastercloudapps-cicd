@@ -29,7 +29,10 @@ node {
        archiveArtifacts "target/*.jar"
    }
    stage('Publish') {
-         sh "mvn deploy -DskipTests -Dversion=${TAG}"
+         nexusPublisher nexusInstanceId: 'localNexus', nexusRepositoryId: 'mvn-releases',
+                 packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '',
+                 filePath: "target/*${TAG}.jar"]], mavenCoordinate: [artifactId: 'practica-jenkins',
+                 groupId: 'es.codeurjc.ci', packaging: 'jar', version: "${TAG}"]]]
      }
   }
    finally {
