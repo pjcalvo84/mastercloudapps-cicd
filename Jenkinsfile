@@ -24,7 +24,7 @@ node {
    }
    stage("Quality"){
         if(pr)
-           sh "mvn sonar:sonar  -Dsonar.branch=${CHANGE_BRANCH}"
+           sh "mvn sonar:sonar  -Dsonar.pullrequest.base=master -Dsonar.pullrequest.branch=${CHANGE_BRANCH} -Dsonar.pullrequest.key=${CHANGE_ID}"
          else
             sh "mvn sonar:sonar  -Dsonar.branch=${branch}"
    }
