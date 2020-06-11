@@ -1,6 +1,5 @@
 package es.codeurjc.daw;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +40,7 @@ public class BlogRestController {
     public ResponseEntity<Comment> newComment(@PathVariable long postId, @RequestBody Comment comment) {
 		comment = this.postService.addComment(postId, comment);
         return new ResponseEntity<>(comment, HttpStatus.CREATED);
+        //TODO: refactor
     }
 
     @DeleteMapping("/post/{postId}/comment/{commentId}")

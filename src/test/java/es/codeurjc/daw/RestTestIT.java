@@ -152,8 +152,6 @@ public class RestTestIT {
         then().
              assertThat().
              statusCode(204);
-
-
         
         // COMPROBAMOS QUE EL COMENTARIO NO EXISTE
 
@@ -163,7 +161,6 @@ public class RestTestIT {
              assertThat().
              statusCode(200).
              body(Constant.COMMENTS, IsEmptyCollection.empty());
-    
     }
 
     //TODO crear más test
