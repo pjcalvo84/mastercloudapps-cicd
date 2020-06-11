@@ -45,6 +45,7 @@ public class UnitaryTest {
 		Mockito.doNothing().when(postService).addPost(post);
 		when(postService.getPost(post.getId())).thenReturn(post);
 
+		//TODO:prueba
 
 		MvcResult result = mvc.perform(
 			post("/api/post")

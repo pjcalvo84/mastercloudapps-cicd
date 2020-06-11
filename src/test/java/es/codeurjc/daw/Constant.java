@@ -12,4 +12,6 @@ public class Constant {
     public static final String NUEVO_POST = "Nuevo post";
     public static final String JUAN = "Juan";
     public static final String BUEN_COMENTARIO = "Buen comentario";
+
+    //FIXME: prueba
 }
