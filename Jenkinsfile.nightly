@@ -24,6 +24,7 @@ node {
         sh " echo ${version}"
 
          DATETIME_TAG = java.time.LocalDateTime.now()
+         DATE = java.time.LocalDate.now()
          TAG = version + "-NIGHTLY-SNAPSHOT";
 
          sh " echo ${TAG}"
@@ -49,7 +50,7 @@ node {
         }
    stage('Tag in repo'){
 
-           sh "git tag ${version}-${DATETIME_TAG}-NIGHTLY"
+           sh "git tag ${version}-${DATE}-NIGHTLY"
            sh "git push --tags"
        }
   }
