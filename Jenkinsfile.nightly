@@ -1,6 +1,4 @@
-def var
 def mvnVersion
-def DATETIME_TAG
 def TAG
 def version
 node {
@@ -13,35 +11,25 @@ node {
     stage ('Run DataBase'){
         sh 'chmod +x ./startDDBB.sh'
         sh './startDDBB.sh'
-        var = sh(script: "docker inspect --format '{{ .NetworkSettings.IPAddress }}' \$(docker ps -aq -f 'name=db')", returnStdout: true).trim()
-
     }
     stage ('Tag repository') {
-       sh 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout  > outFile'
-       mvnVersion = readFile 'outFile'
-
+        sh 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout  > outFile'
+        mvnVersion = readFile 'outFile'
         version = sh(script:" echo ${mvnVersion} | cut -d'-' -f1", returnStdout: true).trim()
         sh " echo ${version}"
-
-         DATETIME_TAG = java.time.LocalDateTime.now()
-         DATE = java.time.LocalDate.now()
-         TAG = version + "-NIGHTLY-SNAPSHOT";
-
-         sh " echo ${TAG}"
-          }
-
+        DATE = java.time.LocalDate.now()
+        TAG = version + "-NIGHTLY-SNAPSHOT";
+        sh " echo ${TAG}"
+     }
     stage("Create jar") {
         sh "mvn clean package -B -DskipTests -Dversion=${TAG}"
    }
     stage("Test") {
-
         sh "mvn verify  -Dspring.datasource.username=mark -Dspring.datasource.password=hello22 -Dversion=${TAG}"
-
    }
    stage("Quality"){
        sh "mvn sonar:sonar -Dversion=${TAG}"
-   }
-
+       }
    stage("Save jar"){
        archiveArtifacts "target/*.jar"
    }
@@ -49,7 +37,6 @@ node {
            sh "mvn deploy -DskipTests -Dversion=${TAG}"
         }
    stage('Tag in repo'){
-
            sh "git tag v${version}-${DATE}-NIGHTLY"
            sh "git push --tags"
        }

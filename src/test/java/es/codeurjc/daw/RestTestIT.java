@@ -59,7 +59,6 @@ public class RestTestIT {
              assertThat().
              statusCode(200).
              body("title", equalTo(post.getTitle()));
-        
     }
 
     @Test
@@ -106,7 +105,6 @@ public class RestTestIT {
              statusCode(200).
              body("comments[0].author", equalTo(comment.getAuthor())).
              body("comments[0].message", equalTo(comment.getMessage()));
-    
     }
 
     @Test

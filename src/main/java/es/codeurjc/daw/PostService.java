@@ -22,7 +22,6 @@ public class PostService {
 	@Autowired
 	private CommentRepository commentRepository;
 
-
 	public List<Post> getPostsList() {
 		return postRepository.findAll();
 	}
@@ -34,7 +33,6 @@ public class PostService {
 	public void addPost(Post post) {
 		postRepository.save(post);
 	}
-
 
 	public Comment addComment(long postId, Comment comment) {
 		Post post = postRepository.findById(postId).orElseThrow(EntityNotFoundException::new);
