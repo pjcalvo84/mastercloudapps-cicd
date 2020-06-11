@@ -5,7 +5,8 @@
 
     <groupId>es.urjc.code</groupId>
     <artifactId>practica-jenkins</artifactId>
-    <version>1.0.7-SNAPSHOT</version>
+    <version>${version}</version>
+
     <packaging>jar</packaging>
 
     <parent>
@@ -21,7 +22,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-
+        <version>1.0.7-SNAPSHO</version>
         <skipTests>false</skipTests>
         <skipITs>${skipTests}</skipITs>
         <skipUTs>${skipTests}</skipUTs>
@@ -128,7 +129,10 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
     <distributionManagement>
@@ -141,4 +145,11 @@
             <url>http://localhost:8081/repository/mvn-releases/</url>
         </repository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>maven-group</id>
+            <url>http://localhost:8081/repository/maven-group/</url>
+        </repository>
+    </repositories>
 </project>
