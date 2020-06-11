@@ -45,14 +45,14 @@ public class SeleniumTestIT {
 
 		driver.get("http://localhost:"+this.port+"/");
 
-		findElementWithText("Nuevo post").click();
+		findElementWithText(Constant.NUEVO_POST).click();
 
-		String postTitle = "Mi titulo";
-		String postContent = "Mi contenido";
+		String postTitle = Constant.MI_TITULO;
+		String postContent = Constant.MI_CONTENIDO;
 		
-		driver.findElement(By.name("title")).sendKeys(postTitle);
-		driver.findElement(By.name("content")).sendKeys(postContent);
-		driver.findElement(By.tagName("form")).submit();
+		driver.findElement(By.name(Constant.TITLE)).sendKeys(postTitle);
+		driver.findElement(By.name(Constant.CONTENT)).sendKeys(postContent);
+		driver.findElement(By.tagName(Constant.FORM)).submit();
 
 		// COMPROBAMOS QUE LA PÁGINA DE RESPUESTA ES CORRECTA
 		assertNotNull(findElementWithText(postTitle));
@@ -72,30 +72,29 @@ public class SeleniumTestIT {
 
 		driver.get("http://localhost:"+this.port+"/");
 
-		findElementWithText("Nuevo post").click();
+		findElementWithText(Constant.NUEVO_POST).click();
 
-		String postTitle = "Mi titulo";
-		String postContent = "Mi contenido";
+		String postTitle = Constant.MI_TITULO;
+		String postContent = Constant.MI_CONTENIDO;
 		
-		driver.findElement(By.name("title")).sendKeys(postTitle);
-		driver.findElement(By.name("content")).sendKeys(postContent);
-		driver.findElement(By.tagName("form")).submit();
+		driver.findElement(By.name(Constant.TITLE)).sendKeys(postTitle);
+		driver.findElement(By.name(Constant.CONTENT)).sendKeys(postContent);
+		driver.findElement(By.tagName(Constant.FORM)).submit();
 
 		// CREAMOS UN NUEVO COMENTARIO
 
-		String commentAuthor = "Juan";
-		String commentMessage = "Buen comentario";
+		String commentAuthor = Constant.JUAN;
+		String commentMessage = Constant.BUEN_COMENTARIO;
 
-		driver.findElement(By.name("author")).sendKeys(commentAuthor);
-		driver.findElement(By.name("message")).sendKeys(commentMessage);
-		driver.findElement(By.tagName("form")).submit();
+		driver.findElement(By.name(Constant.AUTHOR)).sendKeys(commentAuthor);
+		driver.findElement(By.name(Constant.MESSAGE)).sendKeys(commentMessage);
+		driver.findElement(By.tagName(Constant.FORM)).submit();
 
 		// COMPROBAMOS QUE SE HA CREADO
 
 		WebElement authorAndMessage = driver.findElement(By.tagName("ul"))
 			.findElement(getConditionForText(commentAuthor+": "+commentMessage));
 		assertNotNull(authorAndMessage);
-
 	}
 
 	private WebElement findElementWithText(String text) {

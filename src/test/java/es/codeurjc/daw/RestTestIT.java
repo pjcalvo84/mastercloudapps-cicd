@@ -162,8 +162,9 @@ public class RestTestIT {
         then().
              assertThat().
              statusCode(200).
-             body("comments", IsEmptyCollection.empty());
+             body(Constant.COMMENTS, IsEmptyCollection.empty());
     
     }
-    
+
+    //TODO crear más test
 }
