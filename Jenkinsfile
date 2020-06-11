@@ -6,6 +6,7 @@ node {
     stage("Prepare"){
        try{
             branch = CHANGE_BRANCH
+            pr = true
        }
        catch(Exception e){
              branch = BRANCH_NAME
@@ -22,6 +23,9 @@ node {
         sh 'mvn test'
    }
    stage("Quality"){
+        if(pr)
+           sh "mvn sonar:sonar  -Dsonar.pullrequest.branch=${CHANGE_BRANCH} -Dsonar.pullrequest.key=${CHANGE_ID}"
+         else
             sh "mvn sonar:sonar  -Dsonar.branch=${branch}"
    }
    stage("Save jar"){
