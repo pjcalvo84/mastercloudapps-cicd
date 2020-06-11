@@ -13,11 +13,9 @@ import java.util.List;
 @RequestMapping("/api")
 public class BlogRestController {
 
-
     @Autowired
     private PostService postService;
 
-    //	@JsonView(Post_.Basic.class)
     @GetMapping("/post")
     public ResponseEntity<List<Post>> listPosts() {
         List<Post> listPost = postService.getPostsList();
