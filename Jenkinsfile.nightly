@@ -50,7 +50,7 @@ node {
         }
    stage('Tag in repo'){
 
-           sh "git tag ${version}-${DATE}-NIGHTLY"
+           sh "git tag v${version}-${DATE}-NIGHTLY"
            sh "git push --tags"
        }
   }
