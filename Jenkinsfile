@@ -17,7 +17,7 @@ node {
         )
     }
     stage("Create jar"){
-        sh 'mvn clean install -B -DskipTests'
+        sh 'mvn clean package -B -DskipTests'
     }
     stage("Test") {
         sh 'mvn test'
