@@ -34,6 +34,7 @@ public class BlogWebController {
 			model.addAttribute(ERROR_MESSAGE, NO_EXISTE_UN_POST_CON_ID + id);
 			return ERROR;
 		}
+		//Comentario
 		Object userName = session.getAttribute(USER_NAME);
 		model.addAttribute(USER_NAME, userName != null ? userName : "");
 		model.addAttribute("post", post);
