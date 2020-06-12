@@ -36,7 +36,7 @@ public class RestTestIT {
 
         // CREAMOS UN NUEVO POST
 
-		Post post = new Post("Mi titulo", "Mi contenido");
+		Post post = new Post(Constant.MI_TITULO, Constant.MI_CONTENIDO);
     	
         Post createdPost =
             given().
@@ -48,7 +48,7 @@ public class RestTestIT {
             then().
                 assertThat().
                 statusCode(201).
-                body("title", equalTo(post.getTitle()))
+                body(Constant.TITLE, equalTo(post.getTitle()))
                 .extract().as(Post.class);
 
         // COMPROBAMOS QUE EL POST SE HA CREADO CORRECTAMENTE
@@ -58,7 +58,7 @@ public class RestTestIT {
         then().
              assertThat().
              statusCode(200).
-             body("title", equalTo(post.getTitle()));
+             body(Constant.TITLE, equalTo(post.getTitle()));
     }
 
     @Test
@@ -67,7 +67,7 @@ public class RestTestIT {
 
 		// CREAMOS UN NUEVO POST
 
-		Post post = new Post("Mi titulo", "Mi contenido");
+		Post post = new Post(Constant.MI_TITULO, Constant.MI_CONTENIDO);
     	
         Post createdPost =
             given().
@@ -92,8 +92,8 @@ public class RestTestIT {
         then().
             assertThat().
             statusCode(201).
-            body("author", equalTo(comment.getAuthor())).
-            body("message", equalTo(comment.getMessage()));
+            body(Constant.AUTHOR, equalTo(comment.getAuthor())).
+            body(Constant.MESSAGE, equalTo(comment.getMessage()));
 
         
         // COMPROBAMOS QUE EL COMENTARIO EXISTE
@@ -113,7 +113,7 @@ public class RestTestIT {
 
         // CREAMOS UN NUEVO POST
 
-		Post post = new Post("Mi titulo", "Mi contenido");
+		Post post = new Post(Constant.MI_TITULO, Constant.MI_CONTENIDO);
     	
         Post createdPost =
             given().
@@ -138,8 +138,8 @@ public class RestTestIT {
         then().
             assertThat().
             statusCode(201).
-            body("author", equalTo(comment.getAuthor())).
-            body("message", equalTo(comment.getMessage())).
+            body(Constant.AUTHOR, equalTo(comment.getAuthor())).
+            body(Constant.MESSAGE, equalTo(comment.getMessage())).
             extract().as(Comment.class);
 
         // BORRAMOS EL COMENTARIO
@@ -152,8 +152,6 @@ public class RestTestIT {
         then().
              assertThat().
              statusCode(204);
-
-
         
         // COMPROBAMOS QUE EL COMENTARIO NO EXISTE
 
@@ -162,8 +160,8 @@ public class RestTestIT {
         then().
              assertThat().
              statusCode(200).
-             body("comments", IsEmptyCollection.empty());
-    
+             body(Constant.COMMENTS, IsEmptyCollection.empty());
     }
-    
+
+    //TODO crear más test
 }
