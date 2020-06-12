@@ -81,7 +81,7 @@ public class RestTestIT {
         
         // CREAMOS UN NUEVO COMENTARIO
 
-        Comment comment = new Comment("Juan", "Buen post");
+        Comment comment = new Comment(Constant.JUAN, Constant.BUEN_POST);
 
         given().
             request()
@@ -127,7 +127,7 @@ public class RestTestIT {
         
         // CREAMOS UN NUEVO COMENTARIO
 
-        Comment comment = new Comment("Juan", "Buen post");
+        Comment comment = new Comment(Constant.JUAN, Constant.BUEN_POST);
 
         Comment createdComment = given().
             request()
