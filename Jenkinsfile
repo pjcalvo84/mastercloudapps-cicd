@@ -32,7 +32,7 @@ node {
        archiveArtifacts "target/*.jar"
    }
    stage('Publish') {
-      if(branch == "master")
+      if(branch == "master"){
             sh 'mvn deploy -DskipTests'
             }
       }
